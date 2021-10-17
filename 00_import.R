@@ -43,7 +43,9 @@ data_all$Birthdate_dam <- as.Date(data_all$Birthdate_dam, "%d.%m.%Y")
 # Gera aldur vid fyrsta burd
 data <- data_all %>% mutate( age_at_1st_calving = case_when ( Calving_nr == 1 ~  Calving_date - Birthdate_dam ))
 
-# Endurkoda fate
+# Endurkoda fate, virkar svona:
+# Fate er sett sem 1 ef ad i Fate stendur "1, Settur á". O.s.frv.
+
 data <- data %>% mutate( Fate = case_when( Fate ==  "1, Settur á" ~ "1",
                                            Fate ==  "2, Alinn til kjötframleiðslu" ~ "2",
                                            Fate ==  "3, Slátrað/í sláturhús" ~ "3",
@@ -61,13 +63,42 @@ data <- data %>% mutate( Fate = case_when( Fate ==  "1, Settur á" ~ "1",
                                              Gangur ==  "" ~ "NA"
 
                                                ))
-# Remove animals with missing gestation lengths
-data <- data[!is.na(data$Days_insem_calving),]
 #
-# Remove temporary files
+# Fjarlaegja milliskref
 # rm(data_2018,data_2019, data_2020,data_2021)
 
 ############################## Data Quality Filters
-# Remove illegal lengths of gestation
-# NOTE you need to specify a value here that makes sense, this removes a lot of records
+# Thessi skipun siar gognin um gestation length og setur þau sem gildi á bilinu 280 - 298 dagar.
+# Thid thurfid ad akveda hvad thid viljid gera med thau
+# Sem daemi hef eg lika tekid ut allar sem eru ekki fyrsta kalfs kvigur herna ad nedan i gognunum kvigur
+
 data_filtered <- data %>% filter ( Days_insem_calving > 280 & Days_insem_calving < 298 )
+
+
+kvigur <- data %>% filter (  !is.na(age_at_1st_calving)  ) # fjarlaegir allar NA
+kvigur <- data %>% filter ( Calving_nr == 1  )             # fjarlaegir allar sem eru ekki med burdarnumer 1, gefur somu nidurstodu og hitt
+
+# Lika haegt ad sameina mismunandi filtera
+data_filtered <- data %>% filter ( Gangur == 1 & Fate == 1 )
+
+# Medalaldur kvigna vid fyrsta burd
+mean(data_filtered$age_at_1st_calving, na.rm = T)
+
+# Breyti forminu a aldri kviga ur "difftime" i daga
+data_filtered$age_at_1st_calving <- as.integer(data_filtered$age_at_1st_calving)
+
+# Profa aftur ad taka medaltal, en deili med 30 til ad fa manudi
+mean(data_filtered$age_at_1st_calving, na.rm = T)/30
+
+
+############################ Lysandi tolfraedi
+# Eingongu gert sem daemi um konnunartolfraedi
+# Herna fjoldi athugana eftir aldri
+summarised_data <- data %>% group_by( Calving_nr ) %>% tally()
+
+# Hernda fjoldi athugana eftir aldri og Gangur
+summarised_data <- data %>% group_by( Calving_nr, Gangur ) %>% tally()
+
+# fjoldi eftir aldri og afdrifum kalfs en skoda bara 1sta og 2nrs kalfs kvigur
+
+summarised_data <- data %>% group_by( Calving_nr, Fate ) %>% filter ( Calving_nr < 3 ) %>% tally()
