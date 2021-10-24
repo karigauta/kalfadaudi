@@ -63,7 +63,7 @@ data <- data %>% mutate( Fate = case_when( Fate ==  "1, Settur á" ~ "1",
                                              Gangur ==  "" ~ "NA"
 
                                                ))
-#
+save(data, file = "kalfadaudi.Rdata")
 # Fjarlaegja milliskref
 # rm(data_2018,data_2019, data_2020,data_2021)
 
@@ -101,4 +101,6 @@ summarised_data <- data %>% group_by( Calving_nr, Gangur ) %>% tally()
 
 # fjoldi eftir aldri og afdrifum kalfs en skoda bara 1sta og 2nrs kalfs kvigur
 
-summarised_data <- data %>% group_by( Calving_nr, Fate ) %>% filter ( Calving_nr < 3 ) %>% tally()
+summarised_data <- data %>% group_by( Sire_ID ) %>% filter (  ) %>% tally()
+
+
