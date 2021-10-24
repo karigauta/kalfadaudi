@@ -33,7 +33,7 @@ data <- data %>% filter (  )
 data_filtered <- data %>% filter ( ID_dam %in% listi_kvigur_18$ID_dam)
 
 # her sjaid thid lysandi tolfraedi fyrir thennan hop
-# Fyrsta linan, Calving_nr 1 meikar sens thvi thad voru bara tekin 4,7 og 9. Svo sest hvernig thaer dreifdust i 2. og 3. kalf
+# ftable er snidugt til ad setja upp svona tidnitoflu
 ftable(data_filtered[c("Calving_nr", "Fate")]) # her er thad burdur nr. og afdrif
 
 # herna er gangur, en nota prop.table til ad skoda hlutfollinn innan nr. burdar (margin = 1 thydir ad radirnar ganga upp i 1)
@@ -68,6 +68,15 @@ data <- data %>% mutate ( Afdrif_nytt = case_when(
 prop.table(ftable(data[c("Season_calving", "Afdrif_nytt")]), margin = 1)
 # mikill munur thegar gangur er skodadur
 prop.table(ftable(data[c("Gangur", "Afdrif_nytt")]), margin = 1)
+
+# profa ad skoda hvernig gognin lita oll ut med thessari nyju breytu
+# Tharna syna kvigurnar hrodalegt utslag. 29% af kalfunum drepast innan solarhrings!
+
+prop.table(ftable(data[c("Calving_nr", "Afdrif_nytt")]), margin = 1)
+# profum ad skoda lika kyn kalfsins
+# hefur mikil ahrif virdist vera, tarfarnir drepast meira allsstadar
+prop.table(ftable(data[c("Calving_nr", "Sex", "Afdrif_nytt")]), margin = 1)
+
 
 ###################### 3. Fedur
 # flokid ad skoda tha tharsem their eru margir, 1044
