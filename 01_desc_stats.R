@@ -41,6 +41,8 @@ prop.table(ftable(data_filtered[c("Calving_nr", "Gangur")]), margin = 1)
 
 ################### 2. Skipta burdum eftir seasoni
 
+# her tek eg ut nyja breytu sem er bara numerid a manudinum
+# svo by eg til breytu sem segir ad ef burdurinn er mai - sept => sumar
 data <- data %>% mutate( Month_calving = format(Calving_date, format = "%m"),
                          Season_calving = case_when(
                           as.integer(Month_calving) %in% c(5,6,7,8,9) ~ "Summer",
@@ -68,6 +70,8 @@ data <- data %>% mutate ( Afdrif_nytt = case_when(
 prop.table(ftable(data[c("Season_calving", "Afdrif_nytt")]), margin = 1)
 # mikill munur thegar gangur er skodadur
 prop.table(ftable(data[c("Gangur", "Afdrif_nytt")]), margin = 1)
+
+
 
 # profa ad skoda hvernig gognin lita oll ut med thessari nyju breytu
 # Tharna syna kvigurnar hrodalegt utslag. 29% af kalfunum drepast innan solarhrings!
