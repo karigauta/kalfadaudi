@@ -72,7 +72,6 @@ prop.table(ftable(data[c("Season_calving", "Afdrif_nytt")]), margin = 1)
 prop.table(ftable(data[c("Gangur", "Afdrif_nytt")]), margin = 1)
 
 
-
 # profa ad skoda hvernig gognin lita oll ut med thessari nyju breytu
 # Tharna syna kvigurnar hrodalegt utslag. 29% af kalfunum drepast innan solarhrings!
 
@@ -102,9 +101,10 @@ test1 <- as.data.frame.matrix(prop.table(ftable(x = data_trimmed_bulls[c("Sire_I
 # tolurnar birtast bara sem e^14 thvi thannig eru storar tolur syndar i R. Thaer eru "rettar" i gognunum
 # getid filterad ut einstaka fedur.
 # nokkud viss um ad: 999999999919999 er othekktur fadir en lika thegar reiturinn er tomur (NA)
-# thad eru bara 15 kalfar med thennan fodur
+# thad eru bara 15 kalfar med thennan fodur (nrow er til ad telja linurnar í þessum filter)
  nrow(data %>% filter ( Sire_ID == 999999999919999))
-
+# hinsvegar eru 11544 kálfar með óþekktan föður
+ nrow(data %>% filter ( is.na(Sire_ID)))
  #################### 5. margir filterar
 
  # til ad gera marga filtera tharf bara passa upp a hvernig their eru byggdir upp
