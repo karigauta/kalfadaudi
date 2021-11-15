@@ -7,7 +7,23 @@ load("kalfadaudi.Rdata")
 # tek ut alla sem eru med somu modur, med sama kalving nr og somu faedingardagsetningu
 data1 <- data[!duplicated(data[c("ID_dam", "Calving_nr", "Calving_date")]),]
 
+# Vidbot 15.11.2021
+# kanna hvort thessi filter virki rett
+data1 <- data[duplicated(data[c("ID_dam", "Calving_nr", "Calving_date")]),]
+write.csv2(data1, file= "tvikelfingar.csv")
+
+# skv. skodun kemur i ljos ad thetta tekur bara ut annan tvikelfinginn. Til ad losna vid bada tharf ad
+# breyta filternum aðeins
+
+# bua til lista sem eru fyrri tvikelfingurinn
+f1 <- !duplicated(data[c("ID_dam", "Calving_nr", "Calving_date")])
+# bua til lista sem er seinni tvikelfingurinn, thad er gert med ad skanna afturabak (fromLast = T)
+f2 <- !duplicated(data[c("ID_dam", "Calving_nr", "Calving_date")], fromLast = T)
+data_an_tvikelfinga <- data[f1 & f2,]
+
+
 # 2. fylgja eftir kvigu til annars burdar og skoda hvort thaer eru med meiri tidni en medaltalid
+
 # hja 2. kalfs kvigum
 
 # Skoda dreifingu hja 2. kalfs kvigum
