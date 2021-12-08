@@ -64,6 +64,5 @@ data_pivot <-
 sum(data_pivot$Calving_nr_2, na.rm = T) # telja hvad thad eru margir einstakir lifandi faeddir kalfar i Calving_nr_2
 sum(data_pivot$Calving_nr_1, na.rm = T) # telja hvad thad eru margir einstakir lifandi faeddir kalfar i Calving_nr_1
 
-# thetta virkar en fjoldi staka i talningunni er furdulegur, aetti ad vera sami og summa hernan ad ofan (14808+13435) - tharf ad skoda betur
-table(data_pivot$Calving_nr_1, data_pivot$Calving_nr_2)
-
+# thetta virkar en fjoldi staka i talningunni er furdulegur, tharf ad skoda betur. Finnst thad aettu ad vera fleiri...
+ftable(data_pivot[c("Calving_nr_1", "Calving_nr_2")])
